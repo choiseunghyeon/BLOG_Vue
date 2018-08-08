@@ -3,9 +3,9 @@
     id="inspire"
   >
     <v-navigation-drawer
-      v-model="drawer" fixed :clipped="false" app dark hide-overlay mobile-break-point="960">
+      v-model="drawer" fixed :clipped="false" app class="blue-grey darken-4" dark hide-overlay mobile-break-point="960">
       <v-list dense>
-        <v-card tile flat >
+        <v-card tile flat class="blue-grey darken-4">
         <v-layout row wrap>
           <v-flex xs12 class="videoTitle">
             <div class="">
@@ -16,12 +16,12 @@
           </v-flex>
           <v-layout row wrap class="textCenter">
             <v-flex xs4 >
-              <router-link class="button" to="/">
+              <router-link class="button" to="/list">
                 <span>HOME</span>
               </router-link>
             </v-flex>
             <v-flex xs4 >
-              <router-link class="button" to="/about">
+              <router-link class="button" to="/article">
                 <span>ABOUT</span>
               </router-link>
             </v-flex>
@@ -34,7 +34,7 @@
 
           </v-layout>
         </v-card>
-        <v-divider dark class="ml-3 mr-3"></v-divider>
+        <v-divider class="ml-3 mr-3"></v-divider>
 
         <v-subheader class="mt-3 mb-2" style="font-size:1.4rem;">Category</v-subheader>
         <ul class="category">
@@ -100,12 +100,14 @@
       </v-layout>
     </v-toolbar>
 
-    <v-content>
+    <v-content class="grey lighten-4">
       <v-container grid-list-lg>
         <v-layout justify-center align-center>
           <v-flex>
 
-            <router-view></router-view>
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
 
           </v-flex>
         </v-layout>
@@ -122,12 +124,13 @@ import Constant from '@/Constant.js'
 export default {
   name: 'Main',
   created: function(){
+    this.$store.dispatch(Constant.GET_LOAD_CATEGORY);
     this.$router.push({path: '/list'})
   },
   components: {MarkdownEditor},
   computed: mapState(['markdownEditorFlag']),
   data: function(){
-    return {drawer: true};
+    return {drawer: true, searchKeword: ''};
   },
   methods: {
     toggleMarkdownEditor: function () {
@@ -148,6 +151,14 @@ export default {
     height: 400px !important;
   }
 }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease;
+}
+.fade-enter, .fade-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 .videoTitle{
   text-align: center;
   font-size:1.5rem;
@@ -161,7 +172,6 @@ export default {
 .category{
   list-style: none;
   padding-left:16px;
-  text-align: left;
 }
 .category li{
   margin-bottom: 5px;

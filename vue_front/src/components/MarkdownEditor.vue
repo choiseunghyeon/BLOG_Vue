@@ -90,7 +90,6 @@ export default {
   display: inline-block;
    width: 100%;
    height: 150px;
-   text-align: justify;
    vertical-align: top;
    box-sizing: border-box;
    padding: 20px;
