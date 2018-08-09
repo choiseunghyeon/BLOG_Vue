@@ -1,4 +1,4 @@
 export default {
   markdownEditorFlag: false,
-  category: [],
+  categoryItems: [],
 }

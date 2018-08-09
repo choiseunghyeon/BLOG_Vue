@@ -4,6 +4,7 @@ import Main from '@/components/Main'
 import List from '@/components/List'
 import Article from '@/components/Article'
 import About from '@/components/About'
+import Category from '@/components/admin/Category'
 Vue.use(Router)
 
 export default new Router({
@@ -14,5 +15,6 @@ export default new Router({
         { path: '/article', name: 'article', component: Article},
         { path: '/about', name: 'about', component: About},
       ]}
+    ,{ path: '/category', name: 'category', component: Category}
   ]
 })

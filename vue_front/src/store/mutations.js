@@ -6,6 +6,6 @@ export default {
   },
 
   [Constant.GET_LOAD_CATEGORY] : (state, payload) => {
-    state.category = payload;
+    state.categoryItems = payload;
   }
 }

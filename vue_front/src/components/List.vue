@@ -1,6 +1,6 @@
 <template lang="html">
 <v-layout row wrap>
-<!-- <v-flex xs12>
+<v-flex xs12>
 <v-jumbotron height="80px" color="primary">
 <v-container fill-height>
   <v-layout align-center>
@@ -10,7 +10,7 @@
   </v-layout>
 </v-container>
 </v-jumbotron>
-</v-flex> -->
+</v-flex>
 <v-flex xs12 md4 xl3 v-for="data in lists" :key="data">
   <v-card >
    <v-card-media

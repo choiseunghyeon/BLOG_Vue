@@ -37,32 +37,39 @@
         <v-divider class="ml-3 mr-3"></v-divider>
 
         <v-subheader class="mt-3 mb-2" style="font-size:1.4rem;">Category</v-subheader>
-        <ul class="category">
-          <li> Web
-            <hr class="categoryBorder mr-5">
-            <ul class="category">
-              <li>Vue
-              <hr class="categoryBorder mr-5">
-              </li>
-              <li>Node
-                <hr class="categoryBorder mr-5">
-                <ul class="category">
-                  <li>express
-                  <hr class="categoryBorder mr-5">
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <li>SECURITY
-            <hr class="categoryBorder mr-5">
-            <ul class="category">
-              <li>WEB<hr class="categoryBorder mr-5"></li>
-              <li>pwnable<hr class="categoryBorder mr-5"></li>
-            </ul>
-          </li>
-        </ul>
+        <v-list>
+          <v-list-group
+            v-for="item in categoryItems"
+            v-model="item.active"
+            :key="item.id"
+            :prepend-icon="item.icon"
+            no-action
+          >
+            <v-list-tile slot="activator" style="padding-left:0px;">
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
 
+            <!-- Sub List -->
+            <v-list-tile
+              v-for="subItem in item.items"
+              :key="subItem.id"
+              @click=""
+              class="pl-2"
+            >
+              <v-list-tile-content>
+                <v-list-tile-title>{{ subItem.name }}</v-list-tile-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action>
+                <v-icon>{{ subItem.icon }}</v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+            <!--  the end of Sub List-->
+
+          </v-list-group>
+        </v-list>
         <!-- sm보다 작은 화면에서는 숨김  -->
         <v-layout row align-center class="ml-4 mr-4 hidden-sm-and-down" style="max-width: 650px">
           <v-text-field
@@ -76,6 +83,9 @@
           </v-text-field>
         </v-layout>
         <v-btn class="ml-3 mt-5" outline dark @click.stop="toggleMarkdownEditor">글작성
+          <v-icon right>create</v-icon>
+        </v-btn>
+        <v-btn class="ml-3 mt-5" outline dark @click.stop="editCategory">카테고리
           <v-icon right>create</v-icon>
         </v-btn>
       </v-list>
@@ -118,7 +128,7 @@
 </template>
 
 <script>
-import MarkdownEditor from '@/components/MarkdownEditor'
+import MarkdownEditor from '@/components/admin/MarkdownEditor'
 import {mapState} from 'vuex'
 import Constant from '@/Constant.js'
 export default {
@@ -128,15 +138,18 @@ export default {
     this.$router.push({path: '/list'})
   },
   components: {MarkdownEditor},
-  computed: mapState(['markdownEditorFlag']),
+  computed: mapState(['markdownEditorFlag', 'categoryItems']),
   data: function(){
-    return {drawer: true, searchKeword: ''};
+    return {drawer: true, searchKeword: '',};
   },
   methods: {
     toggleMarkdownEditor: function () {
       this.$store.dispatch(Constant.TOGGLE_MARKDOWN_EDITOR);
     },
     searchArticle: function () {
+    },
+    editCategory: function(){
+      this.$router.push({path: '/category'});
     }
   },
 }

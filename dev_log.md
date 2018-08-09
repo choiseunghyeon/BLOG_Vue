@@ -15,9 +15,11 @@
   - Category 정보 server에서 요청하여 가져옴
   - router변경시 transition 적용(fade)
 
+18.08.09
+  - Category data structure 구성
+  
 진행예정사항
-  - category 그리기
+  - Category 순서 지정과 생성 및 삭제(Category.vue)
   - 디자인 재정리
   - article 관련 글 서버로 전송
   - db 설정 및 서버 api 구축
-  
