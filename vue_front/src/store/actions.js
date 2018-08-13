@@ -28,5 +28,14 @@ export default {
     } catch (e) {
       console.error(e);
     }
-  }
+  },
+  [Constant.ADD_CATEGORY_ITEM] : (store, payload) => {
+    AxiosAPI.addCategoryItem(payload)
+    .then((res) => {
+      store.dispatch(Constant.GET_LOAD_CATEGORY);
+    })
+    .catch((ex) => {
+      console.log("ERROR!!!!", ex);
+    })
+  },
 }

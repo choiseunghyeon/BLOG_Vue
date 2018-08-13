@@ -14,7 +14,7 @@ module.exports = {
 			// , { url:'/load_article', method:'load_article', type:'get'} // article 정보 주기
 			//
 			// // ===== POST 생성 ===== //
-	    // ,{ url:'/add_category', method:'add_category', type:'post'}				// category 추가
+	    ,{ url:'/add_category', method:'add_category', type:'post'}				// category 추가
 			// ,{ url:'/add_article', method:'add_article', type:'post'}				// article 등록
 			// ,{ url:'/login_submit', method:'login_submit', type:'post'}				// 로그인
 

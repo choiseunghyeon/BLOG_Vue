@@ -17,6 +17,11 @@
 
 18.08.09
   - Category data structure 구성
+
+18.08.13
+  - Category.vue 구성
+  - Category 추가 dialog 작성중
+  - front-back category 추가 함수 구현
   
 진행예정사항
   - Category 순서 지정과 생성 및 삭제(Category.vue)

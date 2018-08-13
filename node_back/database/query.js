@@ -34,4 +34,18 @@ module.exports = {
       })
     })
   },
+  insertCategory: (con, data) => {
+    return new Promise( (resolve, reject) => {
+      let exec = con.query("INSERT INTO category SET ? ", data, (err, result) => {
+        console.log("카테고리 추가 SQL : ",exec.sql);
+
+        if (err) {
+          con.release();
+          reject(err);
+        }
+        resolve(result);
+      })
+    })
+  },
+  
 }
