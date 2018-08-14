@@ -1,5 +1,6 @@
 import Constant from '../constant';
 import AxiosAPI from '../api/AxiosAPI.js';
+import ForAction from '../api/ForAction.js';
 
 export default {
 
@@ -16,15 +17,8 @@ export default {
         id:2, location:1, name:'Vue'
       }]},{}]
       */
-      let categoryItems = res.data.filter(val => val.parent == null);
-      // in ascending order
-      categoryItems.sort((a, b) => a.location - b.location)
-      //rootCategory안에 childCategory 넣고 location기준 in ascending order
-      for (var i = 0; i < categoryItems.length; i++) {
-        categoryItems[i].items = res.data.filter(val => val.parent == categoryItems[i].id)
-        categoryItems[i].items.sort((a,b) => a.location - b.location)
-      }
-      store.commit(Constant.GET_LOAD_CATEGORY, categoryItems);
+      let category = ForAction.categoryStructure(res.data);
+      store.commit(Constant.GET_LOAD_CATEGORY, category);
     } catch (e) {
       console.error(e);
     }
@@ -38,4 +32,22 @@ export default {
       console.log("ERROR!!!!", ex);
     })
   },
+  [Constant.DELETE_CATEGORY] : (store, payload) => {
+    AxiosAPI.deleteCategory(payload)
+    .then((res) => {
+      store.dispatch(Constant.GET_LOAD_CATEGORY);
+    })
+    .catch((ex) => {
+      console.log("ERROR!!!!", ex);
+    })
+  },
+  [Constant.UPDATE_CATEGORY] : (store, payload) => {
+    AxiosAPI.updateCategory(payload)
+    .then((res) => {
+      store.dispatch(Constant.GET_LOAD_CATEGORY);
+    })
+    .catch((ex) => {
+      console.log("ERROR!!!!", ex);
+    })
+  }
 }

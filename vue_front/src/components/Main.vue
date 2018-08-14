@@ -71,7 +71,7 @@
           </v-list-group>
         </v-list>
         <!-- sm보다 작은 화면에서는 숨김  -->
-        <v-layout row align-center class="ml-4 mr-4 hidden-sm-and-down" style="max-width: 650px">
+        <v-layout row align-center class="ml-4 mr-4 mt-4 hidden-sm-and-down" style="max-width: 650px">
           <v-text-field
             :append-icon-cb="searchArticle"
             placeholder="Search..."
@@ -85,7 +85,7 @@
         <v-btn class="ml-3 mt-5" outline dark @click.stop="toggleMarkdownEditor">글작성
           <v-icon right>create</v-icon>
         </v-btn>
-        <v-btn class="ml-3 mt-5" outline dark @click.stop="editCategory">카테고리
+        <v-btn class="mt-5" outline dark @click.stop="routerCategory">카테고리
           <v-icon right>create</v-icon>
         </v-btn>
       </v-list>
@@ -148,7 +148,7 @@ export default {
     },
     searchArticle: function () {
     },
-    editCategory: function(){
+    routerCategory: function(){
       this.$router.push({path: '/category'});
     }
   },
@@ -182,31 +182,9 @@ export default {
   text-align: center;
   font-size:1.2rem;
 }
-.category{
-  list-style: none;
-  padding-left:16px;
-}
-.category li{
-  margin-bottom: 5px;
-  font-weight: normal;
-  font-size: 1.2rem;
-  letter-spacing: 1.3px;
-}
 .textCenter a{
   color: #5ea1e4;
   text-decoration: none;
 }
-.category > li {
-  margin-bottom: 20px;
-}
-.categoryBorder{
-    display: block;
-    -webkit-box-flex: 1;
-    flex: 1 1 0px;
-    max-width: 100%;
-    height: 0px;
-    max-height: 0px;
-    border: solide;
-    margin-bottom: 10px;
-}
+
 </style>

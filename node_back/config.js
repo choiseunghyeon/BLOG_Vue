@@ -21,13 +21,13 @@ module.exports = {
 			//
 			//
 			// // ===== PUT 업데이트 ===== //
-			// ,{ url:'/update_category', method:'update_category', type:'put'} // category 수정
+			,{ url:'/update_category', method:'update_category', type:'put'} // category 수정
 			// ,{ url:'/update_article', method:'update_article', type:'put'} // article 수정
 			// ,{ url:'/update_responsible', method:'update_responsible', type:'put'} // 책임 수사 관서 수정
 			//
 			//
 			// // ===== DELETE 삭제 ===== //
-	    // ,{ url:'/delete_category', method:'delete_user', type:'delete'}			// category 삭제
+	    ,{ url:'/delete_category', method:'delete_category', type:'delete'}			// category 삭제
 			// ,{ url:'/delete_article', method:'delete_article', type:'delete'}			// article 삭제
 
 	]

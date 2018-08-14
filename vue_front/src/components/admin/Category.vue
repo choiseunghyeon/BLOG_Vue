@@ -1,43 +1,55 @@
 <template>
-<v-content class="grey lighten-4">
+<v-app id="inspire" dark>
+<v-content>
 <v-container grid-list-lg>
-<v-layout row justify-center>
-  <v-flex xs4 v-for="(items,index) in list">
-  <v-card>
-  <v-card-title primary-title>
-    <div>
-      <h3 class="headline mb-0">Root: {{items[0].name}}</h3>
-      <v-btn small fab dark outline color="indigo">
-        <v-icon dark @click="addItem(index)">add</v-icon>
-      </v-btn>
-    </div>
-  </v-card-title>
-  <v-list style="padding: 0px;">
-  <draggable class="list-group" v-model="list[index]" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-  <transition-group type="transition" :name="'flip-list'">
-    <v-list-tile v-for="element in items" :key="element.id" class="list-group-item">
+<v-layout row wrap justify-center>
+<v-flex xs12 md8>
+  <v-layout row wrap justify-center>
+    <v-flex xs6 md6 v-for="(items,index) in list">
+    <v-card>
+    <v-card-title primary-title>
+      <div>
+        <h3 class="headline mb-0">Root: {{items[0].name}}
+          <v-btn small dark color="indigo">추가
+            <v-icon dark @click="addItem(index)">add</v-icon>
+          </v-btn>
+        </h3>
+      </div>
+    </v-card-title>
+    <v-list style="padding: 0px;">
+    <draggable class="list-group" v-model="list[index]" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+    <transition-group type="transition" :name="'flip-list'">
+      <v-list-tile v-for="element in items" :key="element.id" class="list-group-item">
 
-      <v-list-tile-content>
-        <v-list-tile-title v-text="element.name"></v-list-tile-title>
-      </v-list-tile-content>
-
-    </v-list-tile>
-  </transition-group>
-  </draggable>
-  </v-list>
-  </v-card>
-  </v-flex>
-  <div  class="list-group col-md-3">
+        <v-list-tile-content>
+          <v-list-tile-title v-text="element.name"></v-list-tile-title>
+        </v-list-tile-content>
+        <v-list-tile-action>
+          <v-icon color="pink" @click.stop="removeItem(element,index)">clear</v-icon>
+        </v-list-tile-action>
+      </v-list-tile>
+    </transition-group>
+    </draggable>
+    </v-list>
+    </v-card>
+    </v-flex>
+  </v-layout>
+</v-flex>
+<v-flex xs12 md4>
+  <v-btn color="success" @click="addCategory">카테고리 목록추가</v-btn>
+  <v-btn color="error" @click="routerMain">Main</v-btn>
+  <v-btn color="success" @click="editable = !editable">수정하기</v-btn>
+  <v-btn color="success" @click="updateCategory">수정완료</v-btn>
+  <!-- <v-btn color="success" @click="orderList">오더링</v-btn> -->
+</v-flex>
+  <!-- <div  class="list-group col-md-3">
     <pre>{{listString}}</pre>
-  </div>
-  <div class="">
-    <v-btn color="success" @click="addCategory">카테고리 목록추가</v-btn>
-    <v-btn color="error">Error</v-btn>
-  </div>
+  </div> -->
+  <category-dialog v-if="dialog == true" :form="form" @toggleDialog="toggleDialog"></category-dialog>
 </v-layout>
-<category-dialog></category-dialog>
 </v-container>
 </v-content>
+</v-app>
 </template>
 
 <script>
@@ -64,45 +76,86 @@ export default {
     listString(){
       return JSON.stringify(this.list, null, 2);
     },
-    list2String(){
-      return JSON.stringify(this.list2, null, 2);
-    }
   },
   mapState(['categoryItems'])
   ),
   data () {
     return {
       list: [],
-      editable:true,
+      editable: false,
       isDragging: false,
-      delayedDragging:false
+      delayedDragging:false,
+      dialog:false,
+      form: {},
     }
   },
   methods:{
-    orderList () {
-      this.list = this.list.sort((one,two) =>{return one.order-two.order; })
-    },
+    // orderList () {
+    //   this.list = this.list2;
+    // },
     onMove ({relatedContext, draggedContext}) {
       const relatedElement = relatedContext.element;
       const draggedElement = draggedContext.element;
-      return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+      // root는 움직이지 못하도록 
+      const relatedElementRoot = relatedElement.parent === null;
+      const draggedElementRoot = draggedElement.parent === null;
+      return (!relatedElement || !relatedElementRoot) && !draggedElementRoot
     },
-    addCategory (val) {
-      // icon 추가 예정
+    addCategory () {
+      // 총갯수 + 1을 하여 ROOT location에서 맨 마지막에 위치하도록 함
+      let location = this.list.length+1;
+      this.form = {
+        icon:null, location:location, name:'',
+        parent:null, parentName: ''
+      };
+      this.toggleDialog(true);
     },
     addItem (index) {
-      let name = prompt("이름을 입력하세요");
-      let length = this.list[index].length;
-      let location = this.list[index][length-1].location;
-
-      let payload = {
-        icon:null, id: null,
-        location:location+1, name:name, parent:this.list[index][0].id
+      let location = this.list[index].length;
+      this.form = {
+        icon:null, location:location, name:'',
+        parent:this.list[index][0].id, parentName: this.list[index][0].name
       };
+      this.toggleDialog(true);
+    },
+    toggleDialog(flag){
+      this.dialog = flag
+    },
+    updateCategory(){
+      let payload = this.list.reduce((acc, val, index) => {
+        let parentId = null;
+        for (var i = 0; i < val.length; i++) {
+          if(i === 0){
+            parentId = val[i].id;
+            val[i].parent = null;
+            val[i].location = index+1; // list의 각 배열의 순서가 Root Node location과 같음
+          } else {
+            val[i].parent = parentId;
+            val[i].location = i; // 0번째는 Root 노드
+          }
+          acc.push(val[i])
+        }
+        return acc
+      }, []);
+      console.log("PayLoad: ");
       console.log(payload);
-      this.$store.dispatch(Constant.ADD_CATEGORY_ITEM, payload);
+      this.$store.dispatch(Constant.UPDATE_CATEGORY, payload);
+    },
+    removeItem(obj, index){
+      if(obj.parent === null)
+        if(this.list[index].length > 1){
+          alert("자식이 있는 루트는 삭제할 수 없습니다.")
+          return
+        }
+
+      if(window.confirm("삭제를 희망합니까?"))
+        this.$store.dispatch(Constant.DELETE_CATEGORY,obj.id);
+    },
+    routerMain(){
+      this.$router.push({path: '/list'});
     }
   },
+
   watch: {
     isDragging (newValue) {
       if (newValue){
@@ -114,7 +167,7 @@ export default {
       })
     },
     categoryItems () {
-      this.list = this.categoryItems.reduce((acc,val) => {
+        this.list = this.categoryItems.reduce((acc,val) => {
         let temp = [];
         temp.push({icon:val.icon, id:val.id, location:val.location, name:val.name, parent:val.parent});
         for (var i = 0; i < val.items.length; i++)
@@ -124,7 +177,7 @@ export default {
         acc.push(temp);
         return acc;
       }, [])
-    }
+    },
   }
 }
 </script>

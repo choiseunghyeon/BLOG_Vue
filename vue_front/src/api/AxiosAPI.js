@@ -12,4 +12,16 @@ export default {
       data: payload
     })
   },
+  deleteCategory: function(payload){
+    console.log("deleteCategory", payload);
+    return axios.delete(CONF.DELETE_CATEGORY, {
+      data: {id: payload}
+    })
+  },
+  updateCategory: function(payload){
+      console.log("updateCategory", payload);
+      return axios.put(CONF.UPDATE_CATEGORY, {
+        data: payload
+      })
+  }
 }

@@ -47,5 +47,30 @@ module.exports = {
       })
     })
   },
-  
+  deleteCategory: (con, id) => {
+    return new Promise( (resolve, reject) => {
+      let exec = con.query("DELETE FROM category WHERE id = ?",id, (err, result) => {
+        console.log('카테고리 삭제 SQL : '+exec.sql);
+        if(err){
+          con.release();
+          reject(err);
+        }
+
+        resolve(result);
+      })
+    })
+  },
+  updateCategory: (con, data) => {
+    return new Promise( (resolve, reject) => {
+      let exec = con.query("UPDATE category SET ? WHERE id=?",[data,data.id], (err, result) => {
+        console.log('카테고리 업데이트 SQL : '+exec.sql);
+        if(err){
+          con.release();
+          reject(err);
+        }
+
+        resolve(result);
+      })
+    })
+  }
 }

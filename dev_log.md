@@ -22,9 +22,14 @@
   - Category.vue 구성
   - Category 추가 dialog 작성중
   - front-back category 추가 함수 구현
-  
+
+18.08.14
+  - Category dialog 작성 완료
+  - Category 자식노드 생성 루트노드 생성 및 삭제 완료
+  - Category 수정 완료
+  - Category Root Node 이동 불가능하게 변경
+
 진행예정사항
-  - Category 순서 지정과 생성 및 삭제(Category.vue)
+  - alert 창을 통해서 시스템 흐름 알려주기(ex. 카테고리 삭제 및 생성 article 추가 로딩 등 전체적인 알람들)
   - 디자인 재정리
   - article 관련 글 서버로 전송
-  - db 설정 및 서버 api 구축
